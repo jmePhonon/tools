@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=F32le aplay 
+GenericName=F32le-aplay
+Exec=/opt/bin/f32le-aplay %u
+Terminal=false
+Type=Application
+Categories=AudioVideo;Player;Recorder;
+MimeType=application/f32le;application/f32leS;

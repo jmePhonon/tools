@@ -1,0 +1,61 @@
+#!/bin/bash
+
+function randS {
+  tr -dc A-Za-z0-9 < /dev/urandom | head -c 8
+}
+
+function play {
+  while true;
+  do
+    aplay  -f FLOAT_LE -c $3 --rate $4 $1 &
+    echo $!  > "$status_file"
+    p_id=`cat "$status_file"`
+    echo "Wait $p_id"
+    wait $p_id
+    if [ -f $2 ];
+    then
+      echo "Loop"
+    else
+      echo "Interrupt"
+      break
+    fi
+  done
+}
+
+
+file="$1"
+if [ "$file" = "" -o ! -f "$file" ];
+then
+  echo "Usage: "
+  echo "   f32le-aplay path/to/file.f32le(S) [samplerate (default 44100)]"
+else
+  extension=$(basename -- "$file")
+  extension="${extension##*.}"
+  channels="1"
+
+  if [ "$extension" = "f32leS" ];
+  then
+    channels="2"
+  fi
+
+  samplerate="44100"
+  if [ "$2" != "" ];
+  then
+    samplerate="$2"
+  fi
+
+  status_file="/tmp/playing.`randS`.pid"
+  echo "Playing $file ($extension) channels $channels , samplerate $samplerate"
+  echo "Using status file $status_file"
+
+  echo "-1" > "$status_file"
+
+  play "$file" "$status_file" "$channels" "$samplerate" &
+
+  zenity --width=500 --info --text="Playing $file.\nPress OK to stop"
+
+  p_id=`cat "$status_file"`
+  rm "$status_file"
+  kill $p_id
+fi
+
