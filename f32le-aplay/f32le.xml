@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns='http://www.freedesktop.org/standards/shared-mime-info'>
+    <mime-type type="application/f32le">
+        <comment>f32le</comment>
+        <comment xml:lang="en">f32le</comment>
+        <glob pattern="*.f32le"/>
+    </mime-type>
+    <mime-type type="application/f32leS">
+        <comment>f32leS</comment>
+        <comment xml:lang="en">f32leS</comment>
+        <glob pattern="*.f32leS"/>
+    </mime-type>
+</mime-info>
